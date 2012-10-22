@@ -19,7 +19,9 @@ class AutoPep8PreviewCommand(sublime_plugin.TextCommand):
 
         p = subprocess.Popen(params, stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=plugin_path)
         encoding = sublime.active_window().active_view().encoding()
-        diff = p.stdout.read().decode(encoding)
+        diff = p.stdout.read()
+        if encoding != 'Undefined':
+            diff = diff.decode(encoding)
         for line in p.stderr:
             print line
         if len(diff) == 0:
